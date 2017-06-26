@@ -111,7 +111,6 @@ func queryDelete(id string)(CFRespSingle, error){
 
 func queryList(page int64)(CFRespList, error){
     path := fmt.Sprintf("/dns_records/?page=%d&per_page=%d", page, cfPerPage)
-
     var jsonDecoded CFRespList
 
     resp, err := cfQuery("GET", path, nil)
@@ -130,8 +129,6 @@ func queryList(page int64)(CFRespList, error){
 func cfQuery(method string, path string, body []byte)(*http.Response, error) {
     client := http.Client{}
 
-    fmt.Println(string(body))
-
     pathBuf := bytes.NewBufferString(cfEndpoint)
     pathBuf.WriteRune('/')
     pathBuf.WriteString(cfZoneID)
@@ -139,14 +136,11 @@ func cfQuery(method string, path string, body []byte)(*http.Response, error) {
 
     url := pathBuf.String()
 
-    fmt.Printf("-%s-\n", url)
-
     var err error
     var req *http.Request
     
     if len(body) > 0{
         buf := bytes.NewBuffer(body)
-        fmt.Println("woot")
         req, err = http.NewRequest(method, url, buf)
     }else{
         req, err = http.NewRequest(method, url, nil)

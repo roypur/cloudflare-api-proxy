@@ -61,7 +61,9 @@ func dnsList()([]byte, error){
             }
             pos++
         }
-        resp, err = queryList(i+2)
+        if i < (pageCount - 1){
+            resp, err = queryList(i+2)
+        }
     }
 
     return json.MarshalIndent(&entries, "", "    ")
